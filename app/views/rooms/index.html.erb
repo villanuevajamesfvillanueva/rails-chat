@@ -4,11 +4,8 @@
     <div class="row">
         <div class="col-3">
             <p>Hello, <%= current_user.username %></p>
-            <div class="card mb-5">
-                <div class="card-body">
-                    <%= render 'form', room: Room.new %>
-                </div>
-            </div>
+            <%= render 'form', room: Room.new %>
+            <br>
             <% @rooms.each do |room| %>
                 <%= link_to room do %>
                     <div class="card mb-2">
@@ -23,9 +20,20 @@
         <div class="col-9">
             <% if @room.present? %>
                 <div class="chat-room">
-                    <p><%= @room.name %></p>
+                    <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-brand"><%= @room.name %></span>
+                    </nav>
                     <% @room.messages.each do |message| %>
-                        <p><%= message.content %></p>
+                        <div class="message mb-2 <%= 'me' if message.user == current_user %>">
+                            <div class="content-container">
+                                <div class="content">
+                                    <%= message.content %>
+                                </div>
+                                <div class="author">
+                                    <%= message.user.username %>
+                                </div>
+                            </div>
+                        </div>
                     <% end %>
                     <div class="chat-box">
                         <%= render 'messages/form', message: Message.new, room: @room %>
